@@ -13144,7 +13144,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="prompt input_prompt">In&nbsp;[51]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">eigenvalues</span><span class="p">()</span>
@@ -13249,7 +13249,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="2.-Find-eigenvalues-and-eigenvectors-symbolically">2. Find eigenvalues and eigenvectors symbolically<a class="anchor-link" href="#2.-Find-eigenvalues-and-eigenvectors-symbolically">&#182;</a></h3><p>Notice that Sage doesn't automatrically know that it should simplfy.  You need to tell is using <code>(your_matrix_here).simplify_full()</code></p>
+<h3 id="2.-Find-eigenvalues-and-eigenvectors-by-hand-and-let-Sage-do-the-rest">2. Find eigenvalues and eigenvectors by hand and let Sage do the rest<a class="anchor-link" href="#2.-Find-eigenvalues-and-eigenvectors-by-hand-and-let-Sage-do-the-rest">&#182;</a></h3><p>Notice that Sage doesn't automatrically know that it should simplfy.  You need to tell is using <code>(your_matrix_here).simplify_full()</code></p>
 
 </div>
 </div>
@@ -13386,12 +13386,14 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[73]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#We&#39;ll use &#39;sqrt5&#39; as the name of our special number, and &#39;F&#39; will be the rational numbers plus powers of sqrt5.</span>
 <span class="c1">#We define sqrt5 to be one of the solutions of &#39;x^2 - 5 = 0&#39;</span>
-<span class="n">F</span><span class="o">.&lt;</span><span class="n">sqrt5</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">QQ</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">F</span><span class="o">.&lt;</span><span class="n">sqrt5</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">QQ</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">5</span><span class="p">)</span>                                  <span class="c1">#&lt;-change this for different eigenvalues</span>
+<span class="c1">#Redefine A to be a matrix that only uses these numbers</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]])</span>
 </pre></div>
 
     </div>
@@ -13399,41 +13401,54 @@ div#notebook {
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note: for this method you need to know what kind of square root (or complex numbers) you'll have.  Change the polynomial above accordingly.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[74]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">u1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="n">sqrt5</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
-<span class="n">u2</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span> <span class="o">-</span> <span class="n">sqrt5</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
-<span class="n">v1</span> <span class="o">=</span> <span class="n">vector</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">sqrt5</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
-<span class="n">v2</span> <span class="o">=</span> <span class="n">vector</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">+</span><span class="n">sqrt5</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">u1</span><span class="p">,</span><span class="n">u2</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">eigenvalues</span><span class="p">()</span>
+<span class="n">show</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span><span class="n">u2</span><span class="p">)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<html><script type="math/tex; mode=display">\newcommand{\Bold}[1]{\mathbf{#1}}\frac{1}{2} \mathit{sqrt}_{5} + \frac{3}{2} -\frac{1}{2} \mathit{sqrt}_{5} + \frac{3}{2}</script></html>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[75]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="n">v1</span><span class="p">,</span><span class="n">v2</span><span class="p">])</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">show</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">eigenmatrix_right</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">show</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13465,7 +13480,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[76]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">T</span><span class="o">.</span><span class="n">det</span><span class="p">()</span>
@@ -13481,7 +13496,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[27]:</div>
+    <div class="prompt output_prompt">Out[76]:</div>
 
 
 
@@ -13498,7 +13513,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[70]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">show</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">inverse</span><span class="p">())</span>
@@ -13533,7 +13548,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[71]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#An intermediate step to help me check my work.</span>
@@ -13569,7 +13584,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[72]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">show</span><span class="p">(</span><span class="n">T</span><span class="o">.</span><span class="n">inverse</span><span class="p">()</span> <span class="o">*</span> <span class="n">A</span> <span class="o">*</span> <span class="n">T</span><span class="p">)</span>
